@@ -2,9 +2,22 @@ import React, { useEffect, useState } from "react";
 import "./Main.css";
 import axios from "axios";
 
-const Search = () => {
 
-   /* Hooks  */
+
+
+ /* Time  */
+const timestampToday = Math.round(new Date().getTime() / 1000);
+const timestampYesterday = timestampToday - 24 * 3600;
+const timestampAWeekAgo = timestampToday - 7 * 24 * 3600;
+const timestampAMonthAgo = timestampToday - 30 * 24 * 3600;
+const timestampAYearAgo = timestampToday - 365 * 24 * 3600;
+
+
+
+
+
+const Search = () => {
+  /* Hooks  */
 
   const [results, setresults] = useState([]);
   const [loading, setloading] = useState(false);
@@ -12,82 +25,56 @@ const Search = () => {
   const [query, setquery] = useState("");
   const [tags, settags] = useState("story");
   const [pagecount, setpagecount] = useState(0);
-  const [time, settime] = useState(350000);
+  const [time, settime] = useState(timestampAYearAgo);
 
 
 
 
   /* fetching API  */
 
- 
-
-  const fetchResults = async () => {
-    setloading(true);
-    try {
-      const response = await axios.get(
-        `https://hn.algolia.com/api/v1/search?query=${query}&tags=${tags}&numericFilters=created_at_i>${time}&page=${pagecount}`
-      );
-      setresults(response.data.hits);
-    } catch (err) {
-      seterror(err);
-    }
-    setloading(false);
-  };
-  
-
-
   useEffect(() => {
-    fetchResults()
-    
-    
-  },[]);
+    const fetchResults = async () => {
+      setloading(true);
+      try {
+        const response = await axios.get(
+          `https://hn.algolia.com/api/v1/search?query=${query}&tags=${tags}&numericFilters=created_at_i>${time}&page=${pagecount}`
+        );
+        setresults(response.data.hits);
+      } catch (err) {
+        seterror(err);
+      }
+      setloading(false);
+    };
 
+    fetchResults();
+  }, [query, tags, pagecount, time]);
 
   
-
-
-
-
-
-
 
   const Handlesearch = (e) => {
-    e.preventDefault()
-    fetchResults();
+    e.preventDefault();
   };
 
   function storychange(e) {
     settags(e.target.value);
-    fetchResults();
   }
 
-  function statechange(e) {
-    fetchResults();
-  }
+  function statechange(e) {}
+
 
   function bytime(e) {
     settime(e.target.value);
-    fetchResults();
   }
 
   const Increment = () => {
     setpagecount(pagecount + 1);
-    fetchResults();
   };
 
   const Decrement = () => {
     setpagecount(pagecount - 1);
-    fetchResults();
   };
 
   
-
-  const timestampToday = Math.round(new Date().getTime() / 1000);
-  const timestampYesterday = timestampToday - 24 * 3600;
-  const timestampAWeekAgo = timestampToday - 7 * 24 * 3600;
-  const timestampAMonthAgo = timestampToday - 30 * 24 * 3600;
-  const timestampAYearAgo = timestampToday - 365 * 24 * 3600;
-
   return (
     <div>
       <div>
@@ -99,9 +86,6 @@ const Search = () => {
               className="searchinput"
               placeholder="  search.."
             ></input>
-            <button type="submit" className="searchtbtn">
-              SEARCH
-            </button>
           </form>
         </div>
         <div>
@@ -122,6 +106,7 @@ const Search = () => {
             </select>
 
             <select name="All time" className="selectbox" onChange={bytime}>
+            <option value={time}>All time</option>
               <option value={timestampYesterday}>Last 24h</option>
               <option value={timestampAWeekAgo}>past week</option>
               <option value={timestampAMonthAgo}>Past Month</option>
@@ -161,7 +146,7 @@ const Search = () => {
                   Load more
                 </button>
               ) : (
-                <div>
+                <div className="loadnext">
                   <button onClick={Decrement} className="loadbutton">
                     Go back
                   </button>

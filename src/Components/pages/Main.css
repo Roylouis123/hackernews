@@ -119,6 +119,11 @@
       height: 10px;
       width: 70px;
     }
+
+    .loadnext{
+        display: flex;
+        gap: 3px;
+    }
   }
   
   .selectbox {
