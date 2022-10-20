@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Main.css";
 import axios from "axios";
 
-
-
-
- /* Time  */
+/* Time  */
 const timestampToday = Math.round(new Date().getTime() / 1000);
 const timestampYesterday = timestampToday - 24 * 3600;
 const timestampAWeekAgo = timestampToday - 7 * 24 * 3600;
@@ -14,9 +11,10 @@ const timestampAYearAgo = timestampToday - 365 * 24 * 3600;
 
 
 
-
-
 const Search = () => {
+
+
+    
   /* Hooks  */
 
   const [results, setresults] = useState([]);
@@ -26,7 +24,7 @@ const Search = () => {
   const [tags, settags] = useState("story");
   const [pagecount, setpagecount] = useState(0);
   const [time, settime] = useState(timestampAYearAgo);
-
+  const [storycomment, setstorycomment] = useState(true);
 
 
 
@@ -49,18 +47,14 @@ const Search = () => {
     fetchResults();
   }, [query, tags, pagecount, time]);
 
-  
-
   const Handlesearch = (e) => {
     e.preventDefault();
   };
 
   function storychange(e) {
     settags(e.target.value);
+    setstorycomment(false);
   }
-
-  function statechange(e) {}
-
 
   function bytime(e) {
     settime(e.target.value);
@@ -74,7 +68,6 @@ const Search = () => {
     setpagecount(pagecount - 1);
   };
 
-  
   return (
     <div>
       <div>
@@ -91,22 +84,12 @@ const Search = () => {
         <div>
           <div className="selectcontainer">
             <select className="selectbox" onChange={storychange}>
-              <option value="all">All</option>
               <option value="story">story</option>
               <option value="comment">comment</option>
             </select>
 
-            <select
-              name="popularity"
-              className="selectbox"
-              onChange={statechange}
-            >
-              <option value="popularity">popularity</option>
-              <option value="byDate">Date</option>
-            </select>
-
             <select name="All time" className="selectbox" onChange={bytime}>
-            <option value={time}>All time</option>
+              <option value={time}>All time</option>
               <option value={timestampYesterday}>Last 24h</option>
               <option value={timestampAWeekAgo}>past week</option>
               <option value={timestampAMonthAgo}>Past Month</option>
@@ -118,45 +101,97 @@ const Search = () => {
         {loading ? (
           <div className="loading">loading.....</div>
         ) : (
-          <div>
-            <div className="stories-container">
-              {results.map((result) => (
-                <div key={result.objectID}>
-                  <a
-                    href={result.url}
-                    className="card-anchor"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <article className="story">
-                      <p className="title">{result.title}</p>
-                      <p className="text">{result.ERWERWERWEarticle}</p>
-                      <p className="story-footer">
-                        {result.descendants} comments
-                      </p>
-                    </article>
-                  </a>
-                </div>
-              ))}
-            </div>
+          <>
+            {storycomment ? (
+              <div>
+                <div>
+                  <div className="stories-container">
+                    {results.map((result) => (
+                      <div key={result.objectID}>
+                        <a
+                          href={result.url}
+                          className="card-anchor"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <article className="story">
+                            <p className="title">{result.title}</p>
+                            <p className="text">Author:{result.author}</p>
+                            <p className="story-footer">
+                              comments:{result.num_comments}
+                            </p>
+                          </article>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
 
-            <div className="loadbuttoncontainer">
-              {pagecount < 1 ? (
-                <button onClick={Increment} className="loadbutton">
-                  Load more
-                </button>
-              ) : (
-                <div className="loadnext">
-                  <button onClick={Decrement} className="loadbutton">
-                    Go back
-                  </button>
-                  <button onClick={Increment} className="loadbutton">
-                    Go next
-                  </button>
+                  <div className="loadbuttoncontainer">
+                    {pagecount < 1 ? (
+                      <button onClick={Increment} className="loadbutton">
+                        Load more
+                      </button>
+                    ) : (
+                      <div className="loadnext">
+                        <button onClick={Decrement} className="loadbutton">
+                          Go back
+                        </button>
+                        <button onClick={Increment} className="loadbutton">
+                          Go next
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+            ) : (
+              <div>
+                <div>
+                  <div className="stories-container">
+                    {results.map((result) => (
+                      <div key={result.objectID}>
+                        <a
+                          href={result.url}
+                          className="card-anchor"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <article className="story">
+                            <p className="title">
+                              {result.story_title == null
+                                ? result.title
+                                : result.story_title}
+                            </p>
+                            <p className="text">Author:{result.author}</p>
+                            <p className="story-footer">
+                              comments:{result.num_comments}
+                            </p>
+                          </article>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="loadbuttoncontainer">
+                    {pagecount < 1 ? (
+                      <button onClick={Increment} className="loadbutton">
+                        Load more
+                      </button>
+                    ) : (
+                      <div className="loadnext">
+                        <button onClick={Decrement} className="loadbutton">
+                          Go back
+                        </button>
+                        <button onClick={Increment} className="loadbutton">
+                          Go next
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {error && <div>{error.message}</div>}

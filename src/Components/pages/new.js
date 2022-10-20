@@ -7,6 +7,7 @@ const New = () => {
 
 
 
+
   /* Hooks  */
 
   const [results, setresults] = useState([]);
@@ -18,43 +19,36 @@ const New = () => {
 
   /* fetching API  */
 
-
-
   useEffect(() => {
-
-
     const getStory = async (id) => {
-        try {
-          const story = await axios.get(`${URL}/item/${id}.json`);
-          return story;
-        } catch (error) {
-          console.log("Error");
-          seterror(error);
-        }
-      };
-    
-      const getStories = async () => {
-        setloading(true);
-        try {
-          const { data: storyIds } = await axios.get(
-            `${URL}/newstories.json`
-          );
-          const stories = await Promise.all(storyIds.slice(0, 30).map(getStory));
-          setresults(stories);
-          console.log(stories);
-        } catch (error) {
-          seterror(error);
-        }
-        setloading(false);
-      };
+      try {
+        const story = await axios.get(`${URL}/item/${id}.json`);
+        return story;
+      } catch (error) {
+        console.log("Error");
+        seterror(error);
+      }
+    };
 
-      
+    const getStories = async () => {
+      setloading(true);
+      try {
+        const { data: storyIds } = await axios.get(`${URL}/newstories.json`);
+        const stories = await Promise.all(storyIds.slice(0, 30).map(getStory));
+        setresults(stories);
+        console.log(stories);
+      } catch (error) {
+        seterror(error);
+      }
+      setloading(false);
+    };
+
     getStories();
-  },[]);
+  }, []);
 
 
 
-
+  
   return (
     <div>
       {loading ? (
@@ -71,7 +65,10 @@ const New = () => {
               >
                 <article className="story">
                   <p className="title">{result.data.title}</p>
-                  <p className="text">{result.data.article}</p>
+                  <p className="text">
+                    <b>Author:</b>
+                    {result.data.by}
+                  </p>
                   <p className="story-footer">
                     {calculateTimeDifference(Date.now(), result.data.time)} ago
                     | {result.data.descendants} comments

@@ -5,9 +5,11 @@ import { calculateTimeDifference } from "../utility/Utility";
 
 
 
-
 const Topstories = () => {
+
+
   const url = "https://hacker-news.firebaseio.com/v0";
+
 
 
   /* Hooks  */
@@ -18,41 +20,33 @@ const Topstories = () => {
 
 
 
-
-
+  
   /* fetching API  */
 
   useEffect(() => {
-
     const getStory = async (id) => {
-        try {
-          const story = await axios.get(`${url}/item/${id}.json`);
-          return story;
-        } catch (error) {
-          seterror(error);
-        }
-      };
-    
-      const getStories = async () => {
-        setloading(true);
-        try {
-          const { data: storyIds } = await axios.get(`${url}/topstories.json`);
-          const stories = await Promise.all(storyIds.slice(0, 30).map(getStory));
-          settopstories(stories);
-        } catch (error) {
-          seterror(error);
-        }
-        setloading(false);
-      };
+      try {
+        const story = await axios.get(`${url}/item/${id}.json`);
+        return story;
+      } catch (error) {
+        seterror(error);
+      }
+    };
 
+    const getStories = async () => {
+      setloading(true);
+      try {
+        const { data: storyIds } = await axios.get(`${url}/topstories.json`);
+        const stories = await Promise.all(storyIds.slice(0, 30).map(getStory));
+        settopstories(stories);
+      } catch (error) {
+        seterror(error);
+      }
+      setloading(false);
+    };
 
     getStories();
-    
   }, []);
-
-
-
-
 
   return (
     <div>
@@ -70,7 +64,10 @@ const Topstories = () => {
               >
                 <article className="story">
                   <p className="title">{result.data.title}</p>
-                  <p className="text">{result.data.article}</p>
+                  <p className="text">
+                    <b>Author:</b>
+                    {result.data.by}
+                  </p>
                   <p className="story-footer">
                     {calculateTimeDifference(Date.now(), result.data.time)} ago
                     | {result.data.descendants} comments
