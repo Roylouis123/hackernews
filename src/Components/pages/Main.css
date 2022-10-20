@@ -1,0 +1,170 @@
+.stories-container {
+    width: 100%;
+    position: relative;
+    top: 90px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .stories-container button {
+    margin-bottom: 12rem;
+  }
+  
+  .loading {
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 50px;
+  }
+  
+  .card-anchor {
+    text-decoration: none;
+    color: rgb(17, 131, 188);
+  }
+  
+  .story {
+    width: 30vw;
+    max-width: 30vw;
+    height: 85px;
+    margin-inline: 1vw; /* Centered the story cards within their containers */
+    box-shadow: 0px 3px 28px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .story .title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1.6rem;
+    font-style: normal;
+  }
+  
+  .story .text {
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.4rem;
+    font-style: normal;
+    margin: 1rem 0;
+    color: var(--text-primary);
+  }
+  
+  .story .story-footer {
+    font-size: 0.8rem;
+    font-weight: normal;
+    line-height: 1.1rem;
+    font-style: normal;
+    color: var(--text-secondary);
+  }
+  
+  /*mobile responive */
+  
+  @media only screen and (max-width: 768px),
+    only screen and (max-device-width: 768px) {
+    .stories-container {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .loading {
+      width: 100%;
+      height: 80px;
+      text-align: center;
+      font-size: xx-large;
+      margin-top: 50px;
+    }
+  
+    .story {
+      width: 100%;
+      max-width: 90%;
+      margin-left: 0;
+      height: 100px;
+    }
+  
+    .selectbox {
+      width: 100px;
+      height: 20px;
+      border-radius: 18px;
+      border: 1px rgb(0, 170, 255) solid;
+      height: 38px;
+      width: 110px;
+      text-align: center;
+    }
+  
+    .selectcontainer {
+      display: flex;
+      justify-content: center;
+    }
+  
+    .searchcontainer {
+      
+      margin-right: 20px;
+      margin-bottom: 10px;
+    }
+  
+    .searchinput {
+      margin-top: 50px;
+      height: 32px;
+      width: 110px;
+      border-radius: 18px;
+      border: 1px rgb(131, 147, 155) solid;
+      text-align: center;
+    }
+  
+    .searchtbtn {
+      margin-top: 49px;
+      height: 10px;
+      width: 70px;
+    }
+  }
+  
+  .selectbox {
+    width: 100px;
+    height: 25px;
+    border-radius: 18px;
+    border: 1px rgb(0, 170, 255) solid;
+    height: 38px;
+    width: 110px;
+    text-align: center;
+  }
+  
+  .searchcontainer {
+    display: flex;
+      justify-content: center;
+  }
+  
+  .searchinput {
+    height: 32px;
+    width: 300px;
+    border-radius: 18px;
+    border: 1px rgb(0, 170, 255) solid;
+  }
+  
+  .searchtbtn {
+    height: 38px;
+    width: 80px;
+    border-radius: 18px;
+    border: none;
+    background-color: rgb(0, 170, 255);
+    color: #fff;
+  }
+  
+  .loadbuttoncontainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    margin: 100px;
+  }
+  
+  .loadbutton {
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    background-color: rgb(0, 170, 255);
+    border-radius: 18px;
+    border: none;
+  }
+  
